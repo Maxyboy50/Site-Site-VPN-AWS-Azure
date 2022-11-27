@@ -35,7 +35,7 @@ module "VNET" {
 module "subnet-azure" {
   source = "./azure-resources/Subnet"
   resource_group_name = module.resource_group.resource_group_name
-  virtual_network_name = module.VNET.name
+  virtual_network_name = module.VNET.vnet_name
 }
 
 
