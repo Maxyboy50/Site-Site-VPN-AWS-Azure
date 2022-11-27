@@ -51,6 +51,6 @@ module "subnet-aws" {
 }
 
 module "virtual-private-gateway" {
-    source = "./aws-resources/virtual-private-gateway"
+    source = "./aws-resources/Virtual-Private-Gateway"
     vpc-attachment = module.VPC.vpc-id
 }
