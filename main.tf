@@ -33,10 +33,13 @@ module "VNET" {
 }
 
 module "subnet_azure" {
-  source               = "./azure-resources/Subnet"
-  resource_group_name  = module.resource_group.resource_group_name
-  virtual_network_name = module.VNET.vnet_name
-  count                = 2
+  for_each = toset(["10.0.1.0/24","10.0.2.0/24"])
+  source                = "./azure-resources/Subnet"
+  subnet_name = "${each.value}-subnet"
+  resource_group_name   = module.resource_group.resource_group_name
+  virtual_network_name  = module.VNET.vnet_name
+  cidr_notation_subnets = ["${each.value}"]
+
 }
 
 module "ip_address_azure" {
@@ -49,7 +52,7 @@ module "virtual_network_gateway" {
   source              = "./azure-resources/Virtual_Network_Gateway"
   resource_group_name = module.resource_group.resource_group_name
   location            = module.resource_group.resource_group_location
-  subnet_id           = element(module.subnet_azure, 0).subnet_id
+  subnet_id           = module.subnet_azure["10.0.1.0/24"].subnet_id
   public_ip_address   = module.ip_address_azure.ip_address
 
 }
