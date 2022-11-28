@@ -17,34 +17,42 @@ provider "aws" {
 
 
 #Configure Azure Provider
-provider "azurerm"{
+provider "azurerm" {
   features {}
 }
 
 #Azure Modules
 
-module "resource_group"{
+module "resource_group" {
   source = "./azure-resources/Resource_Group"
 }
 module "VNET" {
-  source = "./azure-resources/VNET"
-  location = module.resource_group.resource_group_location
+  source              = "./azure-resources/VNET"
+  location            = module.resource_group.resource_group_location
   resource_group_name = module.resource_group.resource_group_name
 }
 
 module "subnet_azure" {
-  source = "./azure-resources/Subnet"
-  resource_group_name = module.resource_group.resource_group_name
+  source               = "./azure-resources/Subnet"
+  resource_group_name  = module.resource_group.resource_group_name
   virtual_network_name = module.VNET.vnet_name
-  count = 2
+  count                = 2
 }
 
-module "ip_address_azure"{
-  source = "./azure-resources/Public_IP"
+module "ip_address_azure" {
+  source              = "./azure-resources/Public_IP"
   resource_group_name = module.resource_group.resource_group_name
-  location = module.resource_group.resource_group_location
+  location            = module.resource_group.resource_group_location
 }
 
+module "virtual_network_gateway" {
+  source              = "./azure-resources/Virtual_Network_Gateway"
+  resource_group_name = module.resource_group.resource_group_name
+  location            = module.resource_group.resource_group_location
+  subnet_id           = element(module.subnet_azure, 0).subnet_id
+  public_ip_address   = module.ip_address_azure.ip_address
+
+}
 
 #AWS Modules
 
@@ -58,6 +66,6 @@ module "subnet_aws" {
 }
 
 module "virtual_private_gateway" {
-    source = "./aws-resources/Virtual_Private_Gateway"
-    vpc_attachment = module.VPC.vpc_id
+  source         = "./aws-resources/Virtual_Private_Gateway"
+  vpc_attachment = module.VPC.vpc_id
 }
