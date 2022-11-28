@@ -1,3 +1,3 @@
 variable "vpc_attachment" {
-   type = string
+  type = string
 }

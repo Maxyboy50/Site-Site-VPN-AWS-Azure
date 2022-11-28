@@ -1,3 +1,3 @@
-output "vpc_id"{
-    value = aws_vpc.aws-vpn-test.id
+output "vpc_id" {
+  value = aws_vpc.aws-vpn-test.id
 }

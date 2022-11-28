@@ -33,9 +33,9 @@ module "VNET" {
 }
 
 module "subnet_azure" {
-  for_each = toset(["10.0.1.0/24","10.0.2.0/24"])
+  for_each              = toset(["10.0.1.0/24", "10.0.2.0/24"])
   source                = "./azure-resources/Subnet"
-  subnet_name = "${each.value}-subnet"
+  subnet_name           = "${each.value}-subnet"
   resource_group_name   = module.resource_group.resource_group_name
   virtual_network_name  = module.VNET.vnet_name
   cidr_notation_subnets = ["${each.value}"]
