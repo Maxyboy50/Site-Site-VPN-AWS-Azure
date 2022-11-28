@@ -48,10 +48,10 @@ module "VPC" {
 
 module "subnet-aws" {
   source = "./aws-resources/Subnet"
-  vpc-id = module.VPC.vpc-id
+  vpc_id = module.VPC.vpc_id
 }
 
-module "virtual-private-gateway" {
-    source = "./aws-resources/Virtual-Private-Gateway"
-    vpc-attachment = module.VPC.vpc-id
+module "virtual_private_gateway" {
+    source = "./aws-resources/Virtual_Private_Gateway"
+    vpc_attachment = module.VPC.vpc_id
 }
