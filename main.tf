@@ -32,11 +32,17 @@ module "VNET" {
   resource_group_name = module.resource_group.resource_group_name
 }
 
-module "subnet-azure" {
+module "subnet_azure" {
   source = "./azure-resources/Subnet"
   resource_group_name = module.resource_group.resource_group_name
   virtual_network_name = module.VNET.vnet_name
   count = 2
+}
+
+module "ip_address_azure"{
+  source = "./azure-resources/Public_IP"
+  resource_group_name = module.resource_group.resource_group_name
+  location = module.resource_group.resource_group_location
 }
 
 
@@ -46,7 +52,7 @@ module "VPC" {
   source = "./aws-resources/VPC"
 }
 
-module "subnet-aws" {
+module "subnet_aws" {
   source = "./aws-resources/Subnet"
   vpc_id = module.VPC.vpc_id
 }
