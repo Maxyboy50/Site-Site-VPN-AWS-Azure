@@ -7,6 +7,6 @@ variable "subnet_id" {
 variable "resource_group_name" {
   type = string
 }
-variable "public_ip_address" {
+variable "public_ip_address_id" {
   type = string
 }

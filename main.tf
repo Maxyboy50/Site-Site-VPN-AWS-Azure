@@ -34,8 +34,8 @@ module "VNET" {
 
 module "subnet_azure" {
   for_each = {
-    "subnet-1" = ["10.0.1.0/24"]
-    "subnet-2" = ["10.0.2.0/24"]
+    "GatewaySubnet" = ["10.0.1.0/24"]
+    "VM_Subnet"     = ["10.0.2.0/24"]
   }
   source                = "./azure-resources/Subnet"
   subnet_name           = each.key
@@ -55,8 +55,8 @@ module "virtual_network_gateway" {
   source              = "./azure-resources/Virtual_Network_Gateway"
   resource_group_name = module.resource_group.resource_group_name
   location            = module.resource_group.resource_group_location
-  public_ip_address   = module.ip_address_azure.ip_address
-  subnet_id           = module.subnet_azure["subnet-1"].subnet_id
+  public_ip_address_id   = module.ip_address_azure.public_ip_address_id
+  subnet_id           = module.subnet_azure["GatewaySubnet"].subnet_id
 }
 
 #AWS Modules
@@ -76,7 +76,15 @@ module "virtual_private_gateway" {
 }
 
 module "aws_customer_gateway" {
-  source         = "./aws-resources/Customer_Gateway"
-  customer_gateway_ip = module.ip_address_azure.ip_address
+  source                    = "./aws-resources/Customer_Gateway"
+  customer_gateway_ip       = module.ip_address_azure.ip_address
   aws_customer_gateway_name = "site_site_aws_customer_gateway"
+}
+
+module "aws_side_vpn_connection" {
+  source                     = "./aws-resources/Site_Site_VPN_AWS"
+  customer_gateway_id        = module.aws_customer_gateway.customer_gateway_id
+  virtual_private_gateway_id = module.virtual_private_gateway.virtual_private_gateway_id
+  aws_side_cidr              = "10.0.5.0/24"
+  azure_side_cidr            = "10.0.1.0/24"
 }

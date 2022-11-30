@@ -12,7 +12,7 @@ resource "azurerm_virtual_network_gateway" "azure_side_vpg" {
 
   ip_configuration {
     name                          = "vnetGatewayConfig"
-    public_ip_address_id          = var.public_ip_address
+    public_ip_address_id          = var.public_ip_address_id
     private_ip_address_allocation = "Dynamic"
     subnet_id                     = var.subnet_id
   }
