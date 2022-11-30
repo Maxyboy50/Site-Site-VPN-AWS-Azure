@@ -74,3 +74,8 @@ module "virtual_private_gateway" {
   source         = "./aws-resources/Virtual_Private_Gateway"
   vpc_attachment = module.VPC.vpc_id
 }
+
+module "aws_customer_gateway" {
+  source         = "./aws-sources/Customer_Gateway"
+  customer_gateway_ip = module.ip_address_azure.ip_address
+}
