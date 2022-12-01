@@ -52,11 +52,11 @@ module "ip_address_azure" {
 }
 
 module "virtual_network_gateway" {
-  source              = "./azure-resources/Virtual_Network_Gateway"
-  resource_group_name = module.resource_group.resource_group_name
-  location            = module.resource_group.resource_group_location
-  public_ip_address_id   = module.ip_address_azure.public_ip_address_id
-  subnet_id           = module.subnet_azure["GatewaySubnet"].subnet_id
+  source               = "./azure-resources/Virtual_Network_Gateway"
+  resource_group_name  = module.resource_group.resource_group_name
+  location             = module.resource_group.resource_group_location
+  public_ip_address_id = module.ip_address_azure.public_ip_address_id
+  subnet_id            = module.subnet_azure["GatewaySubnet"].subnet_id
 }
 
 #AWS Modules
@@ -76,10 +76,13 @@ module "virtual_private_gateway" {
 }
 
 module "aws_customer_gateway" {
+  depends_on                = [module.virtual_network_gateway]
   source                    = "./aws-resources/Customer_Gateway"
   customer_gateway_ip       = module.ip_address_azure.ip_address
   aws_customer_gateway_name = "site_site_aws_customer_gateway"
+  
 }
+
 
 module "aws_side_vpn_connection" {
   source                     = "./aws-resources/Site_Site_VPN_AWS"
