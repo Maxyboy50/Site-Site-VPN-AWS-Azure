@@ -80,7 +80,7 @@ module "aws_customer_gateway" {
   source                    = "./aws-resources/Customer_Gateway"
   customer_gateway_ip       = module.ip_address_azure.ip_address
   aws_customer_gateway_name = "site_site_aws_customer_gateway"
-  
+
 }
 
 
