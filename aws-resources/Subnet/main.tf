@@ -1,8 +1,6 @@
 resource "aws_subnet" "main" {
   vpc_id     = var.vpc_id
-  cidr_block = "10.0.5.0/24"
+  cidr_block = var.cidr_block_aws
 
-  tags = {
-    Purpose = "AWS_to_Azure_VPN_Test"
-  }
+  tags = var.tags
 }
