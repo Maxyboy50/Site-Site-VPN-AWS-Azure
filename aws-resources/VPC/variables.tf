@@ -1,4 +1,4 @@
-variable "vpc_cidr_block"{
-    type = string
-    description = "CIDR notation block to use for VPC"
+variable "vpc_cidr_block" {
+  type        = string
+  description = "CIDR notation block to use for VPC"
 }
